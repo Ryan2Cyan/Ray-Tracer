@@ -5,6 +5,12 @@
 #include "Ray.h"
 #include "Entity.h"
 
+struct hitInformation
+{
+	bool hasHit;
+	glm::vec3 hitPosition;
+	glm::vec3 hitNormal;
+};
 class Sphere : public Entity
 {
 private:
@@ -22,5 +28,5 @@ public:
 	void Init();
 
 	// Function to detect if a ray intersects with the sphere:
-	bool Sphere::IsIntersection(Ray newRay);
+	hitInformation Sphere::IsIntersection(Ray newRay);
 };

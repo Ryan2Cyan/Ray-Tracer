@@ -13,7 +13,7 @@
 int main( int argc, char *argv[] )
 {
 	// Initialises SDL, Window, and Renderer - Returns true is successful.
-	const glm::ivec2 screenResolution(640, 480);
+	const glm::ivec2 screenResolution(800, 800);
 	if( !MCG::Init(screenResolution) )
 	{
 		// Return false is unsuccessful.
@@ -44,19 +44,14 @@ int main( int argc, char *argv[] )
 		{
 			posY = y;
 			glm::ivec2 pixelPosition{ posX, posY };
+
 			// Generate a ray based on the pixel coordinates:
 			Ray newRay = camera.GenerateSingleRay(pixelPosition);
-			bool hasHit = sphere.IsIntersection(newRay);
-			glm::vec3 red { 1,0,0 };
-			if (hasHit)
-			{
-				// Draw pixel to the screen:
-				MCG::DrawPixel(pixelPosition, red);
-			}
-			// Generate colour based on the ray:
-			//glm::vec3 newColor = rayTracer.GenerateColor(newRay);
-			//// Draw pixel to the screen:
-			//MCG::DrawPixel(pixelPosition, newColor);
+			
+			// Calculate if the ray hit the screen, if true return the colour
+			// of the sphere, otherwise return background colour.
+			MCG::DrawPixel(pixelPosition, rayTracer.GenerateColor(newRay, sphere));
+		
 		}
 	}
 

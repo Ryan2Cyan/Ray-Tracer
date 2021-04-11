@@ -1,5 +1,6 @@
 #include "Ray.h"
 
+
 // Constructors:
 Ray::Ray() {}
 Ray::Ray(const glm::vec3& position, const glm::vec3& direction) : m_Position(position), m_Direction(direction) {}
