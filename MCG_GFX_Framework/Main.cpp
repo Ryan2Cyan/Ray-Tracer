@@ -13,7 +13,7 @@
 int main( int argc, char *argv[] )
 {
 	// Initialises SDL, Window, and Renderer - Returns true is successful.
-	const glm::ivec2 screenResolution(800, 800);
+	const glm::ivec2 screenResolution(640, 480);
 	if( !MCG::Init(screenResolution) )
 	{
 		// Return false is unsuccessful.
@@ -21,16 +21,13 @@ int main( int argc, char *argv[] )
 	}
 	
 	// Init camera object:
-	Camera camera(90.f, screenResolution);
+	Camera camera(30.f, screenResolution);
 
 	// Init Ray Tracer:
 	RayTracer rayTracer;
 
 	// Init Sphere 3D object:
 	Sphere sphere;
-
-	// Sets background to black:
-	MCG::SetBackground(glm::vec3(0, 0, 0));
 
 	float posX = 0; // x pixel coordinate.
 	float posY = 0; // y pixel coordinate.
