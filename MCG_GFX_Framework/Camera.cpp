@@ -7,7 +7,7 @@ Camera::Camera()
 	// Create an inverted ModelViewProjection matrix on init:
 	CreateInvertedMVP();
 }
-Camera::Camera(float fovs, glm::vec2 screenResolution) : m_fovs(fovs), m_AspectRatio((float)m_ScreenResolution.x / (float)m_ScreenResolution.y), m_ScreenResolution(screenResolution), Entity()
+Camera::Camera(float fovs, glm::vec2 screenResolution) : m_fovs(fovs), m_AspectRatio((float)screenResolution.x / (float)screenResolution.y), m_ScreenResolution(screenResolution), Entity()
 {
 	// Create an inverted ModelViewProjection matrix on init:
 	CreateInvertedMVP();
@@ -24,7 +24,7 @@ Ray Camera::GenerateSingleRay(glm::vec2 pixelCoordinates)
 	
 	// Express the coordinates as the near and far planes:
 	// The 'w' components need to be '1', as they are positions in space:
-	glm::vec4 nearPlane{ NDCX, NDCY, 0, 1 }; // z is 0 as this is closer to origin.
+	glm::vec4 nearPlane{ NDCX, NDCY, -1, 1 }; // z is -1 as this is closer to origin.
 	glm::vec4 farPlane{ NDCX, NDCY, 1, 1 }; // z is 1 as this is farther from origin (3D objects go between near and far).
 
 	// Multiply the near and far planes by the MVP matrix:
@@ -33,19 +33,19 @@ Ray Camera::GenerateSingleRay(glm::vec2 pixelCoordinates)
 	farPlane = m_MVPMatrix * farPlane;
 
 	// Normalise the w coordinate, just-in-case it deviates from 1:
-	nearPlane.w /= nearPlane.w;
-	farPlane.w /= farPlane.w;
+	nearPlane /= nearPlane.w;
+	farPlane /= farPlane.w;
 
 	// Create the ray object:
 	// Assign the Position of the Ray to be the near plane (where it starts):
 	// Assign the Direction of the Ray to be near plane - far plane (where the ray is heading):
-	Ray newRay(nearPlane, (nearPlane - farPlane));
+	Ray newRay(nearPlane, glm::normalize((farPlane - nearPlane)));
 	
 	// Return the ray:
 	return newRay;
 }
 
-glm::mat4 Camera::CreateInvertedMVP()
+void Camera::CreateInvertedMVP()
 {
 	// Create Projection Matrix:
 	glm::mat4 projectionMat = glm::perspective(glm::radians(m_fovs), m_AspectRatio, 0.1f, 100.f);
@@ -54,17 +54,15 @@ glm::mat4 Camera::CreateInvertedMVP()
 	glm::mat4 inverseProjMat = glm::inverse(projectionMat);
 
 	// View Matrix:
-	glm::mat4 viewMat = glm::lookAt(
-		glm::vec3(4, 3, 3), // Camera is at (4,3,3) in world space
-		glm::vec3(0, 0, 0), // Camera looks at the origin.
-		glm::vec3(0, 1, 0) // Camera is head-up (0,-1,0) would be upside down.
-		);
+	glm::mat4 viewMat(1.0f);
+
+	glm::mat4 inverseViewMat = glm::inverse(viewMat);
 
 	// Model Matrix (an identity mat) - model will be at the origin:
 	glm::mat4 modelMat(1.0f);
 
 	// MVP (ModelViewProjection Matrix):
-	glm::mat4 MVPMatrix = inverseProjMat * viewMat * modelMat;
+	glm::mat4 MVPMatrix = inverseViewMat * inverseProjMat/* * modelMat*/;
 
-	return MVPMatrix;
+	m_MVPMatrix = MVPMatrix;
 }

@@ -8,7 +8,7 @@
 // contains basic components (e.g. Position, Rotation, and Scale):
 class Entity
 {
-private:
+protected:
 	glm::vec3 m_Position; // Where the object is located in world space.
 	glm::vec3 m_Rotation; // Rotation of the object in world space.
 	glm::vec3 m_Scale; // Size of object.

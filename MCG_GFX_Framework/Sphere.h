@@ -15,6 +15,7 @@ class Sphere : public Entity
 {
 private:
 	float m_Radius;
+	glm::vec3 m_Color;
 public:
 	// Constructors:
 	Sphere();
@@ -22,6 +23,7 @@ public:
 
 	// Getters:
 	float GetRadius();
+	glm::vec3 GetColor();
 	// Setters:
 	void SetRadius(float radius);
 	// Initialise Function 

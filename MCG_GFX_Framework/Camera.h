@@ -26,5 +26,7 @@ public:
 	Ray GenerateSingleRay(glm::vec2 pixelCoordinates);
 
 	// This function creates an inverted modelviewprojection matrix on initialisation
-	glm::mat4 CreateInvertedMVP();
+	void CreateInvertedMVP();
+
+	void init();
 };

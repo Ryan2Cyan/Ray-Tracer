@@ -1,7 +1,7 @@
 #include "Sphere.h"
 
 // Constructors:
-Sphere::Sphere() : m_Radius(0.4f), Entity() 
+Sphere::Sphere() : m_Radius(1.f), m_Color({ 0.3f, 0.1f, 0.4f }), Entity()
 {
 	Init();
 }
@@ -13,6 +13,7 @@ Sphere::Sphere(float radius) : m_Radius(radius), Entity()
 
 // Getters:
 float Sphere::GetRadius() { return m_Radius; }
+glm::vec3 Sphere::GetColor() { return m_Color; }
 // Setters:
 void Sphere::SetRadius(float radius)
 {
@@ -21,12 +22,12 @@ void Sphere::SetRadius(float radius)
 // Initialise Function 
 void Sphere::Init()
 {
-	glm::vec3 spherePos{ 0, 0, 0 };
+	glm::vec3 spherePos{ 0, 0, -5 };
 	this->SetPosition(spherePos);
-	glm::vec3 sphereRot{ 0,0,0 };
+	/*glm::vec3 sphereRot{ 0,0,0 };
 	this->SetRotation(sphereRot);
-	glm::vec3 sphereScale{ 0,0,0 };
-	this->SetScale(sphereScale);
+	glm::vec3 sphereScale{ 0,3,3 };
+	this->SetScale(sphereScale);*/
 }
 
 // This function checks whether a ray has intersected with the sphere:
@@ -48,10 +49,12 @@ hitInformation Sphere::IsIntersection(Ray newRay)
 	// Part 2: Find the value of 'd':
 	float d = glm::length(L - (t_ca * newRay.GetDirection()));
 
-	if (d < 0 || d > this->GetRadius())
+	if (d > this->GetRadius())
 	{
 		return newHitInfo;
 	}
+	
+
 	// Part 3: Find the value of 't_hc':
 	float t_hc = glm::sqrt((m_Radius * m_Radius) - (d * d));
 
