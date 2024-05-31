@@ -24,6 +24,6 @@ glm::vec3 RayTracer::GenerateColor(Ray ray, Sphere sphere)
 		return newColor;
 	}
 	// If the ray didn't hit the sphere, return the background colour:
-	newColor = { 0.f, 0.f, 0.f };
+	newColor = { 0.1f, 0.1f, 0.2f };
 	return newColor;
 }

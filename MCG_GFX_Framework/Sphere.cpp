@@ -1,7 +1,7 @@
 #include "Sphere.h"
 
 // Constructors:
-Sphere::Sphere() : m_Radius(1.f), m_Color({ 0.3f, 0.1f, 0.4f }), Entity()
+Sphere::Sphere() : m_Radius(1.f), m_Color({ 1.f, 1.f, 0.4f }), Entity()
 {
 	Init();
 }
